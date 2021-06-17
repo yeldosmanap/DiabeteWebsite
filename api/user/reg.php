@@ -1,0 +1,33 @@
+<?php
+// необходимые HTTP-заголовки 
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+	 session_start();
+	$data = json_decode(file_get_contents("php://input"));
+	$login= $data->login;
+	$password= $data->password;
+    $con = mysqli_connect("localhost","root","","den_prezent");
+    if (!$con)
+    {
+    die('Нет соединения: ' . mysql_error());
+    }
+    mysqli_select_db($con, "users");
+	 //INSERT INTO users (userLogin, userPassword, userEmail, userName ) VALUES ('$_POST[login]','$_POST[password]','$_POST[email]', '$_POST[name]')
+    $q = ("INSERT INTO users (login, password, token) VALUES ('$login','$password', '123')");
+
+	 if ( mysqli_query($con, $q)) {
+		http_response_code(200);
+		echo json_encode(array("email" => $login), JSON_UNESCAPED_UNICODE);
+	 }
+	 else{
+		         // код ответа - 503 Сервис не доступен 
+					http_response_code(503);
+					// сообщение пользователю 
+					echo json_encode(array("status" => "error"), JSON_UNESCAPED_UNICODE);
+	 }
+
+?>
