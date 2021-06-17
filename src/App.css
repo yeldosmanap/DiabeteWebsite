@@ -1,0 +1,14 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Encode Sans Expanded", sans-serif;
+}
+
+.recipe-list {
+	color: white;
+}
+.recipe-list li {
+	margin-left: 30px;
+	margin-top: 5px;
+}
